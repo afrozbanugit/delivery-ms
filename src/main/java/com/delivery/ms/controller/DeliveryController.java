@@ -6,6 +6,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import org.springframework.stereotype.Controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.delivery.ms.dto.CustomerOrder;
 import com.delivery.ms.dto.DeliveryEvent;
 import com.delivery.ms.entity.Delivery;
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
+@RequestMapping("/api")
 public class DeliveryController {
 
 	@Autowired
@@ -22,6 +26,11 @@ public class DeliveryController {
 
 	@Autowired
 	private KafkaTemplate<String, DeliveryEvent> kafkaTemplate;
+
+	@GetMapping
+	public String healthStatus(){
+		return "Delivery MS Health ok!";
+	}
 
 	@KafkaListener(topics = "new-stock", groupId = "stock-group")
 	public void deliverOrder(String event) throws JsonMappingException, JsonProcessingException {
