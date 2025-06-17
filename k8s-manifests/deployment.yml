@@ -1,0 +1,38 @@
+---
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+    name: delivery-ms-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: delivery-ms
+    template:
+        metadata:
+            labels:
+                app: delivery-ms
+        spec:
+            containers:
+            - name: delivery-ms-container
+              image: aafrozbanu/delivery-ms:latest
+              ports:
+              - containerPort: 8084
+              env:
+                - name: DB_NAME
+                  value: deliverydb
+                - name: DB_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                        name: db-config
+                        key: host
+                - name: SPRING_DATASOURCE_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                        name: db-secret
+                        key: username
+                - name: SPRING_DATASOURCE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                        name: db-secret
+                        key: password

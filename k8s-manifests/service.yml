@@ -1,0 +1,15 @@
+---
+apiVersion : v1
+kind: Service
+metadata:
+    name: delivery-ms-service
+spec:
+    type: LoadBalancer # since Nodeport is not suitable for EKS (as it provisions a Auto Scaling Group)
+    selector: 
+        app: delivery-ms             
+    ports:
+        - protocol: TCP
+          port: 80  # Port that the service exposes (can be different from the container port)
+          targetPort: 8084 # Port that the service listens on inside the container
+          # nodePort: 30009 #(Port exposed on each node between 30000 and 32767) Not needed since we are using
+          #LoadBalancer
