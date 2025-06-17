@@ -27,7 +27,7 @@ public class DeliveryController {
 	@Autowired
 	private KafkaTemplate<String, DeliveryEvent> kafkaTemplate;
 
-	@GetMapping
+	@GetMapping("/health")
 	public String healthStatus(){
 		return "Delivery MS Health ok!";
 	}
